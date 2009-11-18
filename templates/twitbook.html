@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<script type="text/javascript" src="/static/js/twitter.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        twitter_user.url_profile = "/twitter/profile/";
+        twitter_user.url_timeline = "/twitter/";
+        twitter_user.url_update = "/twitter/";
+        twitter_user.get_profile($("#twitter-div"));
+        twitter_user.load_timeline();
+        
+        $("#send").click(function(){
+            twitter_user.send_twitt($("#text").val());
+        });
+    });
+</script>
+{% end %}
+
+{% block body %}
+<div class="yui-g" >
+    <div id="yui-main">
+        <fieldset>
+            <legend>Update form</legend>
+            <div class="update">
+                <textarea id="text"></textarea>
+                <button id="send">Update</button>
+            </div>
+        </fieldset>
+    </div>
+    <div id="yui-g">
+        <div class="yui-u first">
+            <fieldset>
+                <legend>Twitter side</legend>
+                <div id="twitter-div"></div>
+            </fieldset>
+        </div>
+        <div class="yui-u first">
+            <fieldset>
+                <legend>Facebook side</legend>
+            <div id="facebook-div"></div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% end %}

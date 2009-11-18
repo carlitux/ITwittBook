@@ -1,0 +1,36 @@
+
+html, body{	
+	background: black;
+	color: white;
+}
+
+legend {
+	color: gray;
+}
+
+h1 {
+	text-align: center;
+}
+
+fieldset {
+	border: 1px solid silver;
+	padding: 10px;
+}
+
+.update{
+	width: 100%;
+	height: 50px;
+	padding: 10px;
+}
+
+.update textarea{
+	width: 90%;
+}
+
+.update button{
+	padding: auto;
+}
+
+.ft{
+	text-align: center;
+}
