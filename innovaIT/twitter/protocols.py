@@ -49,7 +49,7 @@ class BaseTwitterHandler(BaseHandler):
         # oauth object instances
         self._oauth_consumer = OAuthConsumer(self.settings["twitter_consumer_key"],
                                              self.settings["twitter_consumer_secret"])
-        self._oauth_datastore = OAuthDataStore.get_or_insert("user:"+self.current_user,
+        self._oauth_datastore = OAuthDataStore.get_or_insert(str(self.current_user),
                                                              user=self.current_user,
                                                              service=SERVICE)
         
@@ -72,7 +72,9 @@ class TwitterLoginHandler(BaseTwitterHandler):
             url = ''.join([self.request.protocol, '://', self.request.host, '/'])
         else:
             url, token = self.oauth_client.fetch_for_authorize()
-            data = RequestToken.get_or_insert("user", user=self.current_user, service=SERVICE)
+            data = RequestToken.get_or_insert(str(self.current_user),
+                                              user=self.current_user,
+                                              service=SERVICE)
             data.save_token(token)
         self.redirect(url)
 
@@ -84,9 +86,9 @@ class TwitterAccessTokenHandler(BaseTwitterHandler):
         """Fetch for access token"""
         if not self.oauth_client.is_authorized():
             token_key = self.get_argument("oauth_token", None)
-            token = RequestToken.get_or_insert("user:"+self.current_user,
-                                                user=self.current_user,
-                                                service=SERVICE)
+            token = RequestToken.get_or_insert(str(self.current_user),
+                                               user=self.current_user,
+                                               service=SERVICE)
             if token.oauth_key == token_key:
                 self.oauth_client.fetch_access_token(token.lookup_token())
             else:
