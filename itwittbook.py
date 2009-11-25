@@ -12,11 +12,11 @@ from innovaIT.facebook import *
 
 # Define some options
 define("facebook_api_key", help="", default="14fcd5a9bedc8f9dbb7646daf7783c7e")
-define("facebook_secret", help="", default="6b2a47a6c0dedfb2cdebf8772308ef0b")
+define("facebook_secret", help="", default="ebe87b9a58dc04962c05e20eab5c48b4")
 define("facebook_callback_url", help="", default="http://carlitos-dev.appspot.com/facebook/save/")
 
-define("twitter_consumer_key", help="", default="rU023o2GC4m8ExC0s1I7fQ")
-define("twitter_consumer_secret", help="", default="08LwWhvuH8enBPpkgJ3YMkdm2qD9SJon6byVS3sbE")
+define("twitter_consumer_key", help="", default="q0eyQiKSHLnJbIjP2aAPA")
+define("twitter_consumer_secret", help="", default="WOuUHfcWIA9FL8WbFDe9tg5xa7MUiWI7prH8qY1HJE")
 define("twitter_callback_url", help="", default="http://carlitos-dev.appspot.com/twitter/save/")
 
 
@@ -37,7 +37,7 @@ settings = {
     "twitter_callback_url": options.twitter_callback_url,
     #"xsrf_cookies": True,
     "debug": True,
-    "cookie_secret":"61oETzKXQYGaYdhL5gEsGeJJFuY87EQnp2XdTP1o/Vo=",
+    "cookie_secret":"61oETzKYQYGaYdhb5gEsEeJJFpY87sQnp2XdTP1o/Vo=",
 }
 
 application = wsgi.WSGIApplication([
