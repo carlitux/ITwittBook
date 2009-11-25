@@ -11,13 +11,13 @@ from innovaIT.twitter import *
 from innovaIT.facebook import *
 
 # Define some options
-define("facebook_api_key", help="", default="14fcd5a9bedc8f9dbb7646daf7783c7e")
-define("facebook_secret", help="", default="6b2a47a6c0dedfb2cdebf8772308ef0b")
-define("facebook_callback_url", help="", default="http://carlitos-dev.appspot.com/facebook/save/")
+define("facebook_api_key", help="", default="your facebook_api_key here")
+define("facebook_secret", help="", default="your facebook_secret here")
+define("facebook_callback_url", help="", default="your facebook_secret here")
 
-define("twitter_consumer_key", help="", default="rU023o2GC4m8ExC0s1I7fQ")
-define("twitter_consumer_secret", help="", default="08LwWhvuH8enBPpkgJ3YMkdm2qD9SJon6byVS3sbE")
-define("twitter_callback_url", help="", default="http://carlitos-dev.appspot.com/twitter/save/")
+define("twitter_consumer_key", help="", default="your facebook_secret here")
+define("twitter_consumer_secret", help="", default="your facebook_secret here")
+define("twitter_callback_url", help="", default="your facebook_secret here")
 
 
 class IndexHandler(BaseHandler):
