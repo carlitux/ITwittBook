@@ -1,0 +1,37 @@
+This application has been developed for learning purpose.
+
+Features:
+  * Login to Twitter with OAuth protocol.
+  * Login to Facebook with Facebook connect
+  * If authorized update status in both Twitter and Facebook
+  * Basic CSS design
+  * The representation of status is very simple.
+
+Requirements:
+  * PyFacebook http://github.com/sciyoshi/pyfacebook/
+  * OAuth-Python-Client http://github.com/carlitux/Python-OAuth-Client
+  * Tornado framework. http://www.tornadoweb.org/
+  
+This application has been implementing to prove several tecnologies
+without seeing the arquitecture, performance, security.
+
+Using Tornado framework into GAE is to see how to implement it, for this
+reason this app do not handle all the exceptions and errors.
+
+This application is subject to the limits google app engine imposed
+on their CPU, RAM, BANDWIDTH quotes.
+
+use this to handle quota errors :
+  * apiproxy_errors.OverQuotaError. 
+    eg.
+    try:
+      mail.SendMessage(to='test@example.com',
+        from='admin@example.com',
+        subject='Test Email',
+        body='Testing')
+    except apiproxy_errors.OverQuotaError, message:
+      # Log the error.
+      logging.error(message)
+      # Display an informative message to the user.
+      self.response.out.write('The email could not be sent. '
+        'Please try again later.')
