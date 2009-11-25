@@ -2,18 +2,77 @@
 
 {% block extra_head %}
 <script type="text/javascript" src="/static/js/twitter.js"></script>
+<script type="text/javascript" src="/static/js/facebook.js"></script>
+<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA" type="text/javascript"></script>
 <script type="text/javascript">
+    FB.init("14fcd5a9bedc8f9dbb7646daf7783c7e");
+    function on_success_twitter(xhr, element){
+        $("#twitter-button").hide();
+        $("#text").val("");
+    }
+    
+    function on_success_facebook(xhr, element){
+        $("#facebook-button").hide();
+        $("#text").val("");
+    }
+    
+    function on_error_twitter(xhr, element){
+        if (xhr.status == 403){
+            $("#twitter-button").show();
+        }
+    }
+    
+    function on_error_facebook(xhr, element){
+        if (xhr.status == 403){
+            $("#facebook-button").show();
+        }
+    }
+    
     $(document).ready(function(){
         twitter_user.url_profile = "/twitter/profile/";
         twitter_user.url_timeline = "/twitter/";
         twitter_user.url_update = "/twitter/";
+        twitter_user.callback_error = on_error_twitter;
+        twitter_user.callback_success = on_success_twitter;
         twitter_user.get_profile($("#twitter-div"));
         twitter_user.load_timeline();
         
+        facebook_user.url_profile = "/facebook/profile/";
+        facebook_user.url_stream = "/facebook/";
+        facebook_user.url_update = "/facebook/";
+        facebook_user.callback_error = on_error_facebook;
+        facebook_user.callback_success = on_success_facebook;
+        facebook_user.get_profile($("#facebook-div"));
+        facebook_user.load_stream();
         $("#send").click(function(){
             twitter_user.send_twitt($("#text").val());
+            facebook_user.send_status($("#text").val());
         });
-    });
+        
+        // creating buttons
+        var img = $("<img id='twitter-button-hi' src='/static/img/twitter_button_4_hi.gif' style='display:none'/><img id='twitter-button-lo' src='/static/img/twitter_button_4_lo.gif'/>");
+        
+        img.mousedown(function(){
+            $("#twitter-button-lo").hide();
+            $("#twitter-button-hi").show();
+        });
+        
+        img.mouseup(function(){
+            $("#twitter-button-lo").show();
+            $("#twitter-button-hi").hide();
+            $(location).attr("href","/twitter/login/");
+        });
+        
+        $("#twitter-button").hide();
+        $("#facebook-button").hide();
+        
+        $("#twitter-button").html(img);
+        $("#RES_ID_fb_login_text").html("Facebook connect");
+        $("#RES_ID_fb_login_text").click(function(){
+            $(location).attr("href","/facebook/login/");
+            return false;
+        });
+    });    
 </script>
 {% end %}
 
@@ -33,12 +92,14 @@
             <fieldset>
                 <legend>Twitter side</legend>
                 <div id="twitter-div"></div>
+                <div id="twitter-button"></div>
             </fieldset>
         </div>
-        <div class="yui-u first">
+        <div class="yui-u">
             <fieldset>
                 <legend>Facebook side</legend>
-            <div id="facebook-div"></div>
+                <div id="facebook-div"></div>
+                <div id="facebook-button"><fb:login-button v="2" size="medium"></fb:login-button></div>
             </fieldset>
         </div>
     </div>

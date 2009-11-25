@@ -28,7 +28,17 @@ fieldset {
 }
 
 .update button{
-	padding: auto;
+	margin-left: auto ;
+	margin-right: auto ;
+}
+
+#twitter-button, #facebook-button{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#twitter-button img, #facebook-button img{
+	cursor: pointer;
 }
 
 .ft{

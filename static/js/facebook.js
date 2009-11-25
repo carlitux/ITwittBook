@@ -27,21 +27,21 @@
 /**
 * Constructor
 **/
-function Twitter(){
+function Facebook(){
     
 }
 
 /**
-* This class define a twitter user.
+* This class define a Facebook user.
 *
 * At this momento only json format for response is implemented and uses
 * JQuery to do ajax request and others.
 * This class don't log in a the user, the session should be actived.
 **/
 prototype = {    
-    // Urls for retrieve twitter data.
+    // Urls for retrieve facebook data.
     url_profile: null,
-    url_timeline: null,
+    url_stream: null,
     url_update: null,
     
     // this field will be called when the response is not valid params xhr, options and element
@@ -75,20 +75,17 @@ prototype = {
     * This function should be the callback for get_profile function.
     **/
     _generate_element: function(data, textStatus){
-        var instance = get_twitter_object();
+        var instance = get_facebook_object();
         
         // creating the base html structure
-        var div = $("<div><div id='profile-twitter'></div><div id='twitts'></div></div>");
-        div.css("background-image", data["profile_background_image_url"]);
-        div.css("background-color", data["profile_background_color"]);
+        var div = $("<div><div id='profile-facebook'></div><div id='news'></div>");
         
-        var profile = "<img src='" + data["profile_image_url"] + "' width='50' height='50'/>";
-        profile += "<div style='display:inline-block; padding:15px;'><p class='twitt-user'></p>Created at: " + data["created_at"] + "<br/>Twitts: " + data["statuses_count"] + "</div>";
+        var profile = "<img src='" + data["pic_small"] + "' width='50' height='50'/>";
+        profile += "<div style='display:inline-block; padding:15px;'><p class='facebook-user'></p><p class='facebook-name'></p></div>";
         profile = $(profile);
-        profile.find(".twitt-user").text(data["screen_name"]);
+        profile.find(".facebook-user").text(data["name"]);
         
-        div.find("#profile-twitter").css("color", data["profile_text_color"])
-                                    .append(profile);
+        div.find("#profile-facebook").append(profile);
         
         instance.element.html(div);
         
@@ -102,47 +99,71 @@ prototype = {
     * Clear the element field and call the callback function with the params.
     **/
     _on_error: function(xhr, textStatus, thrownError){
-        var instance = get_twitter_object();
+        var instance = get_facebook_object();
         if (xhr && xhr.readyState > 1){
             var element = $(instance.element);
             element.html("");
             if (instance.callback_error)
-                instance.callback_error(xhr, element);
+                instance.callback_error(xhr, instance.element);
         }
     },
     
-    load_timeline: function(){
-        if (this.url_timeline == null)
+    load_stream: function(){
+        if (this.url_stream == null)
             throw new Error("URL for timeline is not defined.");
         $.ajax({type: "GET",
-                url: this.url_timeline,
+                url: this.url_stream,
                 dataType: "json",
-                success: this._generate_timeline,
+                success: this._generate_stream,
                 error: this._on_error});
     },
     
-    _generate_timeline: function(data, textStatus){
-        var instance = get_twitter_object();
-        var element = instance.element.find("#twitts").html("");
-        for (index in data)
-            element.append(instance._generate_twitt(data[index]));
-        if (instance.callback_success)
-            instance.callback_success(this, instance.element);
+    _generate_stream: function(data, textStatus){
+        if (data.redirect){
+            $(location).attr("href", data.url);
+        }else{
+            var instance = get_facebook_object();
+            var posts = data.posts;
+            var profiles = data.profiles;
+            
+            var element = instance.element.find("#news").html("");
+            var post = null;
+            var profile = null;
+            
+            for (index in posts){
+                post = posts[index];
+                profile = instance._get_profile(profiles, post.source_id);
+                element.append(instance._generate_post(post, profile));
+            }
+            
+            if (instance.callback_success)
+                instance.callback_success(this, instance.element);
+        }
     },
     
-    _generate_twitt: function(twitt){
-        var html = "<div style='border: 1px solid white; padding: 10px;'><div><img src='" + twitt["user"]["profile_image_url"] + "' width='50' height='50'/>";
-        html += "<p class='twitt-twitter'></p></div>"; // screen name
-        html += "<div> <p class='twitt-text'></p>" // twitt
-        html += "<p> At " + twitt["created_at"] + " from " + twitt["source"] +"</p></div></div>";
+    _get_profile: function(profiles, id){
+        for (index in profiles)
+            if (profiles[index].id == id)
+                return profiles[index]
+        return null;
+    },
+    
+    _generate_post: function(post, profile){
+        var time = new Date();
+        time.setTime(post.created_time);
+        
+        var html = "<div style='border: 1px solid white; padding: 10px;'><div><img src='" + profile.pic_square + "' width='50' height='50'/>";
+        html += "<p class='post-facebook'></p></div>"; // screen name
+        html += "<div> <p class='facebook-text'></p>" // text
+        html += "<p> At " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + "</p></div></div>";
         html = $(html);
         
-        html.find(".twitt-twitter").text(twitt["user"]["screen_name"]);
-        html.find(".twitt-text").text(twitt["text"]);
+        html.find(".post-facebook").text(profile.name);
+        html.find(".facebook-text").text(post.message);
         return html;
     },
     
-    send_twitt: function(text){
+    send_status: function(text){
         if (this.url_update == null)
             throw new Error("URL for update is not defined.");
         if (text != ""){
@@ -150,25 +171,32 @@ prototype = {
                 url: this.url_update,
                 data: {status: text},
                 dataType: "json",
-                success: this._twitt_sent,
+                success: this._post_sent,
                 error: this._on_error});
         }
     },
     
-    _twitt_sent: function(data, textStatus){
-        var instance = get_twitter_object();
-        var element = instance.element.find("#twitts");
-        element.prepend(instance._generate_twitt(data));
-        if (instance.callback_success)
-            instance.callback_success(this, instance.element);
+    _post_sent: function(data, textStatus){
+        var instance = get_facebook_object();
+        var element = instance.element.find("#news");
+        
+        if (data.redirect){
+            $(location).attr("href", data.url);
+        } else if (!data.success){
+            element.prepend("<p style='color:red'>An error ocurred try again</p>");
+            if (instance.callback_success)
+                instance.callback_success(this, instance.element);
+        } else {
+            instance.load_stream();
+        }
     },
 };
 
-$.extend(Twitter.prototype, prototype);
+$.extend(Facebook.prototype, prototype);
 
-function get_twitter_object(){
-    return twitter_user;
+function get_facebook_object(){
+    return facebook_user;
 }
 
 // Global variable for a Twitter object instance
-var twitter_user = new Twitter();
+var facebook_user = new Facebook();
