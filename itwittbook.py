@@ -37,7 +37,7 @@ settings = {
     "twitter_callback_url": options.twitter_callback_url,
     #"xsrf_cookies": True,
     "debug": True,
-    "cookie_secret":"61oETzKXQYGaYdhL5gEsGeJJFuY87EQnp2XdTP1o/Vo=",
+    "cookie_secret":"secret cookie",
 }
 
 application = wsgi.WSGIApplication([
