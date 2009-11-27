@@ -2,7 +2,9 @@ This application has been developed for learning purpose.
 
 Features:
   * Login to Twitter with OAuth protocol.
-  * Login to Facebook with Facebook connect
+  * Login to Facebook with Facebook connect.
+  * Logout from Facebook
+  * Logout from Twitter
   * If authorized update status in both Twitter and Facebook
   * Basic CSS design
   * The representation of status is very simple.
@@ -11,6 +13,10 @@ Requirements:
   * PyFacebook http://github.com/sciyoshi/pyfacebook/
   * OAuth-Python-Client http://github.com/carlitux/Python-OAuth-Client
   * Tornado framework. http://www.tornadoweb.org/
+  
+Unsupported browsers:
+  * IE
+  * Google Chrome
   
 This application has been implementing to prove several tecnologies
 without seeing the arquitecture, performance, security.
