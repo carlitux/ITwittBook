@@ -83,7 +83,7 @@ prototype = {
         div.css("background-color", data["profile_background_color"]);
         
         var profile = "<img src='" + data["profile_image_url"] + "' width='50' height='50'/>";
-        profile += "<div style='display:inline-block; padding:15px;'><p class='twitt-user'></p>Created at: " + data["created_at"] + "<br/>Twitts: " + data["statuses_count"] + "</div>";
+        profile += "<div style='display:inline-block; padding:15px;'><p> <span class='twitt-user'></span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class='disconnect' href='/twitter/logout/'>Disconnect</a></p>Created at: " + data["created_at"] + "<br/>Twitts: " + data["statuses_count"] + "</div>";
         profile = $(profile);
         profile.find(".twitt-user").text(data["screen_name"]);
         

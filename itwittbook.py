@@ -1,6 +1,8 @@
 import os.path
 import wsgiref.handlers
 
+from google.appengine.api import users
+
 from tornado import web
 from tornado import wsgi
 from tornado.options import define
@@ -23,7 +25,7 @@ define("twitter_callback_url", help="", default="http://carlitos-dev.appspot.com
 class IndexHandler(BaseHandler):
     @login_required
     def get(self):
-        self.render('twitbook.html', title="ITwittBook App")
+        self.render('twitbook.html', title="ITwittBook App", url_logout=users.create_logout_url('/'))
 
 settings = {
     "template_path": os.path.join(os.path.dirname(__file__), "templates"),
@@ -47,11 +49,13 @@ application = wsgi.WSGIApplication([
     (r"^/twitter/login/?$", TwitterLoginHandler),
     (r"^/twitter/save/?$", TwitterAccessTokenHandler),
     (r"^/twitter/profile/?$", TwitterProfileHandler),
+    (r"^/twitter/logout/?$", TwitterLogoutHandler),
     
     (r"^/facebook/?$", FacebookStreamHandler),
     (r"^/facebook/login/?$", FacebookLoginHandler),
     (r"^/facebook/save/?$", FacebookSessionHandler),
     (r"^/facebook/profile/?$", FacebookProfileHandler),
+    (r"^/facebook/logout/?$", FacebookLogoutHandler),
     
     #(r"^/facebook/?$", StreamHandler),
 ], **settings)
