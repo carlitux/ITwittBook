@@ -44,3 +44,16 @@ fieldset {
 .ft{
 	text-align: center;
 }
+
+.logout{
+	color: silver;
+	top: 2em;
+	right: 3em;
+	position: absolute;
+	text-decoration: none;
+}
+
+.disconnect{
+	color: silver;
+	text-decoration: none;
+}

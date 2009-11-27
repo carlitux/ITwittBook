@@ -25,6 +25,7 @@
     function on_error_facebook(xhr, element){
         if (xhr.status == 403){
             $("#facebook-button").show();
+            $("#RES_ID_fb_login_text").html("Facebook connect");
         }
     }
     
@@ -67,8 +68,7 @@
         $("#facebook-button").hide();
         
         $("#twitter-button").html(img);
-        $("#RES_ID_fb_login_text").html("Facebook connect");
-        $("#RES_ID_fb_login_text").click(function(){
+        $("#RES_ID_fb_login_text").click(function(event){
             $(location).attr("href","/facebook/login/");
             return false;
         });

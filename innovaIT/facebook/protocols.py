@@ -105,6 +105,13 @@ class FacebookSessionHandler(BaseFacebookHandler):
             url = self.facebook.get_login_url(next=self.facebook.callback_path, canvas=False)
         finally:
             self.redirect(url)
+
+class FacebookLogoutHandler(BaseHandler):
+    def get(self):
+        self.clear_cookie('session_key')
+        self.clear_cookie('uid')
+        self.clear_cookie('session_key_expires')
+        self.redirect('/')
     
 class FacebookStreamHandler(BaseFacebookHandler):
     @login_required

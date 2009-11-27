@@ -28,3 +28,4 @@ from protocols import FacebookProfileHandler
 from protocols import FacebookLoginHandler
 from protocols import FacebookSessionHandler
 from protocols import FacebookStreamHandler
+from protocols import FacebookLogoutHandler

@@ -81,7 +81,7 @@ prototype = {
         var div = $("<div><div id='profile-facebook'></div><div id='news'></div>");
         
         var profile = "<img src='" + data["pic_small"] + "' width='50' height='50'/>";
-        profile += "<div style='display:inline-block; padding:15px;'><p class='facebook-user'></p><p class='facebook-name'></p></div>";
+        profile += "<div style='display:inline-block; padding:15px;'><p class='facebook-user'></p><a class='disconnect' href='/facebook/logout/'>Disconnect</a></div>";
         profile = $(profile);
         profile.find(".facebook-user").text(data["name"]);
         

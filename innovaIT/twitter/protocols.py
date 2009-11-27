@@ -96,7 +96,7 @@ class TwitterAccessTokenHandler(BaseTwitterHandler):
                 return
         self.redirect('/')
 
-class TwitterLogoutHandler(BaseHandler):
+class TwitterLogoutHandler(BaseTwitterHandler):
     def get(self):
         self.oauth_client.deauthorize()
         self.redirect('/')
